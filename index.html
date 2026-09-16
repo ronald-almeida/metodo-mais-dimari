@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f7">
+  <title>Método MAISDIMARI - Checkout</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Lato,Helvetica,Arial,sans-serif;color:#222;background:#f7f7f7}
+    body{padding:8px 16px 24px}
+    .page{width:min(100%,1024px);margin:0 auto}
+    .hero{width:100%;aspect-ratio:1023/278;border-radius:3px;overflow:hidden;position:relative;background:linear-gradient(120deg,#c136d1 0%,#8f55f5 30%,#ff5b8d 62%,#ffd52e 100%);margin-bottom:22px}
+    .hero img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:5% 7%;color:white;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+    .hero-fallback .left{max-width:58%}.hero-fallback .brand-mini{font-size:2.1vw;letter-spacing:.28em;text-transform:uppercase}.hero-fallback .brand-main{font-size:4.2vw;font-weight:800;line-height:1}.hero-fallback .tagline{margin-top:18px;font-size:2.4vw;font-weight:800;line-height:1.25}.hero-fallback .chips{display:grid;gap:12px;width:38%}.hero-fallback .chip{background:linear-gradient(90deg,#ff729c,#ffba29,#fff000);border:4px solid #55e4e3;border-radius:999px;padding:10px 20px;font-size:1.7vw;font-weight:800;color:#fff}
+    .checkout{width:min(100%,654px);background:#fff;border:1px solid #ddd;border-radius:3px;margin:0 0 0 0;padding:30px 20px 14px}
+    .country-row{height:31px;border-bottom:1px solid #d9dfe5;display:flex;justify-content:flex-end;align-items:center;font-size:11px;margin-bottom:28px}
+    .country-row select{border:0;background:transparent;font:11px Lato,Helvetica,Arial,sans-serif;outline:none;color:#111}
+    .flag{width:29px;height:19px;background:#149447;position:relative;display:inline-block;margin-right:7px;overflow:hidden}
+    .flag:before{content:"";position:absolute;width:18px;height:18px;background:#ffdf00;left:6px;top:1px;transform:rotate(45deg) scale(.70)}
+    .flag:after{content:"";position:absolute;width:9px;height:9px;background:#002776;border-radius:50%;left:10px;top:5px}
+    .summary{display:grid;grid-template-columns:162px 1fr;gap:18px;align-items:start;margin-bottom:28px}
+    .cover{width:162px;height:162px;background:linear-gradient(145deg,#db54d8,#8c38d3 58%,#ff8d3d);position:relative;overflow:hidden}
+    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .cover-fallback{position:absolute;inset:0;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;font-size:24px;font-weight:800;line-height:1.03;text-shadow:0 2px 3px rgba(0,0,0,.2)}
+    .summary h1{margin:-9px 0 8px;font-size:26px;line-height:1.27;color:#505050;font-weight:700}.summary .type{font-size:16px;margin-bottom:7px}.summary .price{font-size:28px;color:#505050;margin:3px 0}.summary .period{font-size:15px}.coupon{margin-top:9px;color:#295bb8;font-size:14px}
+    .field-group{margin:0 16px 15px}.field-group label{display:block;font-size:18px;color:#3f3f3f;margin-bottom:6px}.field{width:100%;height:50px;border:1px solid #cfcfcf;background:#fff;padding:0 13px;font:16px Lato,Helvetica,Arial,sans-serif;outline:none}.field:focus{border-color:#2459ba;box-shadow:0 0 0 1px #2459ba}
+    .phone-grid{display:grid;grid-template-columns:122px 1fr;gap:6px}.ddi{height:50px;border:1px solid #cfcfcf;display:flex;align-items:center;padding:0 7px;gap:8px}.ddi select{border:0;background:transparent;font:16px Lato,Helvetica,Arial,sans-serif;color:#333;outline:none;width:75px}
+    .secure-note{text-align:center;margin:16px 0 8px;font-size:14px}.secure-icon{display:inline-flex;width:19px;height:24px;border:1.5px solid #27ae60;border-radius:10px;align-items:center;justify-content:center;color:#27ae60;font-size:12px;margin-right:8px;vertical-align:middle}.method-title{text-align:center;color:#4c4c4c;font-size:12px;margin-bottom:16px}.payment-choice{width:67px;height:66px;border:1px solid #2459ba;border-radius:4px;margin:0 16px 19px;display:flex;align-items:center;justify-content:center;gap:7px;color:#2459ba;font-size:16px}.pix-icon{width:18px;height:18px}.after-note{text-align:center;font-size:13px;line-height:1.35;max-width:510px;margin:0 auto 50px}.pay-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:calc(100% - 32px);height:60px;margin:0 16px;border:0;border-radius:3px;background:#2db549;color:#fff;font:700 14px Lato,Helvetica,Arial,sans-serif;cursor:pointer}.pay-btn:hover{background:#28a542}.pay-btn:disabled{opacity:.65;cursor:wait}.lock{width:20px;height:24px;border:1px solid #fff;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+    .trust{display:flex;justify-content:center;gap:28px;align-items:center;margin:20px 10px 8px;color:#00a834}.trust-item{display:flex;align-items:center;gap:8px;font-size:11px;line-height:1.1;text-transform:uppercase}.trust-ico{font-size:32px;line-height:1}.footer{text-align:center;color:#444;font-size:12px;margin-top:10px}.footer a{color:#333;text-decoration:none}.footer-brand{font-size:30px;font-weight:800;color:#183d6d;margin-top:9px;letter-spacing:-1px}.feedback{min-height:20px;text-align:center;color:#b42318;font-size:13px;margin:10px 16px 0}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.modal.open{display:flex}.modal-card{width:min(100%,430px);background:#fff;border-radius:9px;padding:22px;position:relative}.modal-close{position:absolute;right:12px;top:8px;border:0;background:transparent;font-size:28px;color:#777;cursor:pointer}.modal-card h2{font-size:21px;margin:0 30px 8px 0}.modal-card p{font-size:13px;color:#666;margin:0 0 14px}.qr{display:flex;justify-content:center;margin:8px 0 14px}.qr img{width:240px;height:240px;max-width:100%}.pix-code{width:100%;height:90px;resize:none;border:1px solid #ccc;border-radius:4px;padding:10px;font-size:12px}.copy-btn{width:100%;height:46px;border:0;border-radius:4px;background:#2db549;color:#fff;font-weight:700;margin-top:10px;cursor:pointer}
+    @media(max-width:720px){body{padding:0 8px 18px}.hero{margin-top:7px;margin-bottom:18px}.checkout{padding:22px 12px 14px}.summary{grid-template-columns:120px 1fr}.cover{width:120px;height:120px}.summary h1{font-size:21px}.summary .price{font-size:25px}.field-group{margin-left:8px;margin-right:8px}.pay-btn{width:calc(100% - 16px);margin-left:8px;margin-right:8px}.payment-choice{margin-left:8px}.trust{gap:12px;flex-wrap:wrap}.hero-fallback .chips{gap:6px}.hero-fallback .chip{border-width:2px;padding:6px 9px}}
+    @media(max-width:480px){.summary{grid-template-columns:92px 1fr;gap:12px}.cover{width:92px;height:92px}.summary h1{font-size:18px;margin-top:-5px}.summary .type{font-size:13px}.summary .price{font-size:22px}.summary .period{font-size:12px}.phone-grid{grid-template-columns:115px 1fr}.field-group label{font-size:16px}.after-note{margin-bottom:32px}.trust{justify-content:flex-start}.trust-item{font-size:9px}.hero-fallback{padding:4%}.hero-fallback .brand-main{font-size:6vw}.hero-fallback .tagline{font-size:3.4vw}.hero-fallback .chip{font-size:2.2vw}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Método Maisdimari 2.0">
+      <div class="hero-fallback">
+        <div class="left"><div class="brand-mini">Método</div><div class="brand-main">maisdimari <small>2.0</small></div><div class="tagline">O PASSO A PASSO PRA VOCÊ<br>PRODUZIR E VENDER TODOS OS DIAS</div></div>
+        <div class="chips"><div class="chip">+ SUPORTE CONTÍNUO</div><div class="chip">+ COMUNIDADE</div><div class="chip">+ MENTORIAS AO VIVO</div></div>
+      </div>
+      <img src="./banner.png" alt="Método Maisdimari 2.0" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+    </section>
+
+    <section class="checkout">
+      <div class="country-row"><span class="flag" aria-hidden="true"></span><select aria-label="País"><option selected>Alterar país</option><option>Brasil</option></select></div>
+
+      <div class="summary">
+        <div class="cover"><div class="cover-fallback">MÉTODO<br>maisdimari<br>2.0</div><img src="./product-cover.png" alt="Método Maisdimari 2.0" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+        <div>
+          <h1>Método MAISDIMARI - PREMIUM PPT</h1>
+          <div class="type">PAGAMENTO ÚNICO</div>
+          <div class="price">R$ 497,00</div>
+          <div class="period">Acesso ao produto</div>
+          <div class="coupon">🎟 &nbsp;Cupom de Desconto?</div>
+        </div>
+      </div>
+
+      <form id="checkoutForm" novalidate>
+        <div class="field-group"><label for="name">Nome Completo</label><input id="name" class="field" type="text" autocomplete="name"></div>
+        <div class="field-group"><label for="taxId">CPF ou CNPJ</label><input id="taxId" class="field" type="text" inputmode="numeric"></div>
+        <div class="field-group"><label for="email">E-mail</label><input id="email" class="field" type="email" autocomplete="email"></div>
+        <div class="field-group"><label for="emailConfirm">Confirmar e-mail</label><input id="emailConfirm" class="field" type="email" autocomplete="email"></div>
+        <div class="field-group phone-grid">
+          <div><label>DDI</label><div class="ddi"><span class="flag" aria-hidden="true"></span><select><option>+55</option></select></div></div>
+          <div><label for="phone">Celular</label><input id="phone" class="field" type="tel" inputmode="tel" autocomplete="tel"></div>
+        </div>
+
+        <div class="secure-note"><span class="secure-icon">▣</span>Seus dados serão mantidos em sigilo</div>
+        <div class="method-title">SELECIONE UM MÉTODO DE PAGAMENTO</div>
+        <div class="payment-choice"><svg class="pix-icon" viewBox="0 0 166 166" xmlns="http://www.w3.org/2000/svg"><path d="M128.886 126.429C122.402 126.429 116.304 123.904 111.719 119.321L86.9305 94.5328C85.1908 92.7877 82.1569 92.7931 80.4173 94.5328L55.5383 119.412C50.9529 123.994 44.8548 126.519 38.3704 126.519H33.4857L64.8802 157.914C74.6853 167.718 90.5823 167.718 100.387 157.914L131.873 126.429H128.886Z" fill="currentColor"/><path d="M38.3705 38.7476C44.8549 38.7476 50.953 41.2731 55.5376 45.8562L80.4166 70.739C82.2083 72.5308 85.1342 72.5385 86.9306 70.7367L111.719 45.9464C116.304 41.3633 122.402 38.8385 128.887 38.8385H131.872L100.388 7.35388C90.5824 -2.45126 74.6854 -2.45126 64.8803 7.35388L33.4866 38.7476H38.3705Z" fill="currentColor"/><path d="M157.914 64.8806L138.888 45.8541C138.469 46.022 138.015 46.1269 137.537 46.1269H128.887C124.414 46.1269 120.036 47.9404 116.876 51.1026L92.0874 75.8914C89.7686 78.2109 86.7207 79.3722 83.6752 79.3722C80.6273 79.3722 77.5818 78.2109 75.2622 75.8937L50.3809 51.0124C47.2204 47.8503 42.8433 46.0368 38.3705 46.0368H27.7337C27.2805 46.0368 26.8561 45.9295 26.4558 45.7787L7.35385 64.8806C-2.45128 74.685 -2.45128 90.582 7.35385 100.388L26.455 119.489C26.8553 119.338 27.2805 119.231 27.7337 119.231H38.3705C42.8433 119.231 47.2204 117.417 50.3809 114.255L75.2599 89.3763C79.7567 84.8834 87.5952 84.8811 92.0874 89.3787L116.876 114.164C120.036 117.327 124.414 119.141 128.887 119.141H137.537C138.016 119.141 138.469 119.245 138.888 119.413L157.914 100.388C167.719 90.582 167.719 74.685 157.914 64.8806Z" fill="currentColor"/></svg>Pix</div>
+
+        <div class="after-note">Depois do pagamento, fique atento ao seu e-mail para receber os dados de acesso ao produto (verifique também a caixa de SPAM).</div>
+        <button id="payButton" class="pay-btn" type="button"><span class="lock">▣</span>Pagar Agora</button>
+        <div class="trust"><div class="trust-item"><span class="trust-ico">🛡</span><span>Compra<br>100% segura</span></div><div class="trust-item"><span class="trust-ico">◉</span><span>Privacidade<br>protegida</span></div><div class="trust-item"><span class="trust-ico">▣</span><span>Ambiente<br>verificado e protegido</span></div></div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <footer class="footer"><a href="#">Política de privacidade</a> &nbsp;|&nbsp; <a href="#">Termos de compra</a><div class="footer-brand">Pagamento seguro via PIX</div></footer>
+  </main>
+
+  <div id="pixModal" class="modal" aria-hidden="true"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pixTitle"><button id="closeModal" class="modal-close" type="button" aria-label="Fechar">×</button><h2 id="pixTitle">Pagamento via Pix</h2><p>Escaneie o QR Code ou copie o código Pix abaixo.</p><div id="qr" class="qr"></div><textarea id="pixCode" class="pix-code" readonly></textarea><button id="copyPix" class="copy-btn" type="button">Copiar código Pix</button></div></div>
+
+  <script>
+    const digits=v=>String(v||'').replace(/\D/g,'');
+    const payButton=document.getElementById('payButton');
+    const feedback=document.getElementById('feedback');
+    const modal=document.getElementById('pixModal');
+    const qr=document.getElementById('qr');
+    const pixCode=document.getElementById('pixCode');
+    function getCustomer(){
+      const name=document.getElementById('name').value.trim();
+      const taxId=digits(document.getElementById('taxId').value);
+      const email=document.getElementById('email').value.trim();
+      const emailConfirm=document.getElementById('emailConfirm').value.trim();
+      const phone=digits(document.getElementById('phone').value);
+      if(!name||!taxId||!email||!emailConfirm||!phone)throw new Error('Preencha todos os campos para continuar.');
+      if(email.toLowerCase()!==emailConfirm.toLowerCase())throw new Error('Os e-mails informados não coincidem.');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Informe um e-mail válido.');
+      if(taxId.length!==11&&taxId.length!==14)throw new Error('Informe um CPF ou CNPJ válido.');
+      if(phone.length<10||phone.length>11)throw new Error('Informe um celular válido.');
+      return{name,taxId,email,phone};
+    }
+    payButton.addEventListener('click',async()=>{
+      const original=payButton.innerHTML;
+      try{
+        feedback.textContent='';payButton.disabled=true;payButton.textContent='Gerando Pix...';
+        const response=await fetch('/api/create-pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(getCustomer())});
+        const data=await response.json().catch(()=>({}));
+        if(!response.ok)throw new Error(data.error||'Não foi possível gerar o Pix.');
+        if(!data.copypaste||!data.qrCode)throw new Error('O Pix foi criado, mas os dados de pagamento não foram retornados corretamente.');
+        pixCode.value=data.copypaste;qr.innerHTML='<img src="'+data.qrCode+'" alt="QR Code Pix">';modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+      }catch(e){feedback.textContent=e.message||'Erro ao gerar o Pix.'}
+      finally{payButton.disabled=false;payButton.innerHTML=original}
+    });
+    document.getElementById('closeModal').addEventListener('click',()=>{modal.classList.remove('open');modal.setAttribute('aria-hidden','true')});
+    modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}});
+    document.getElementById('copyPix').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(pixCode.value)}catch{pixCode.select();document.execCommand('copy')}const b=document.getElementById('copyPix');b.textContent='Código Pix copiado';setTimeout(()=>b.textContent='Copiar código Pix',1800)});
+    document.getElementById('checkoutForm').addEventListener('submit',e=>e.preventDefault());
+  </script>
+</body>
+</html>
