@@ -1,7 +1,7 @@
 import QRCode from 'qrcode';
 
 const PRODUCT_NAME = 'Método MAISDIMARI - PREMIUM PPT';
-const PRODUCT_AMOUNT = 49700;
+const PRODUCT_AMOUNT = 29700;
 const API_URL = 'https://api.gatewaypayshark.com.br/v1/payment';
 
 const trim = value => typeof value === 'string' ? value.trim() : '';
